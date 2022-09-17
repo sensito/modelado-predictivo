@@ -1,0 +1,5 @@
+setup.py
+src/mpb22p1.egg-info/PKG-INFO
+src/mpb22p1.egg-info/SOURCES.txt
+src/mpb22p1.egg-info/dependency_links.txt
+src/mpb22p1.egg-info/top_level.txt
