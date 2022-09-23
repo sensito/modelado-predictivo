@@ -13,11 +13,10 @@ class TabularDatasetSummary(DatasetSummary):
             if features is not None and labels is not None:
                 # features: Lista que contendrá el nombre de las características que se deseen cargar. En caso de que sea None, cargar todas las características.
                 # labels: Lista que contendrá el nombre de las características que serán usadas como etiquetas en el dataset. En caso de que sea None, se asumirá que no existe una etiqueta. Todas las columnas especificadas aquí deberás ser excluidas de lalista de features.
-   
-                self.features  = features
                 self.labels = labels
-                index = labels - features
-                self.data = pd.read_csv(filepath, index_col=index, names=features)
+                index = [x for x in features if x not in labels]
+                self.features  = index
+                self.data = pd.read_csv(filepath, index_col=self.labels, names=self.features)
             elif features is not None:
                 self.features = features
                 self.data = pd.read_csv(filepath, names = features)
