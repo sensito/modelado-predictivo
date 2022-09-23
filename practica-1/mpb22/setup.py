@@ -1,6 +1,6 @@
 import setuptools 
 setuptools.setup(
-    name='mpb22p1',  
+    name='mpb22',  
     version='0.1',
     author='Daniel Ivan Medina Barreras',
     author_email='danielivanhola@gmail.com',
