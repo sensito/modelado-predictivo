@@ -10,3 +10,5 @@ setuptools.setup(
     packages=setuptools.find_packages(where="src")
 )
 #comando para instalar el paquete en el entorno virtual de python: pip install -e .
+
+#ver paquetes instalados en el entorno virtual: pip list

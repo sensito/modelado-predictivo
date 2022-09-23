@@ -26,8 +26,10 @@ class TabularDatasetSummary(DatasetSummary):
                 self.data = pd.read_csv(filepath, index_col=labels)
             else:
                 self.data = pd.read_csv(filepath)
-        except:
-            raise ValueError("Error")   
+        # except FileNotFoundError:
+        
+        except Exception as e: 
+            raise ValueError("Error: {}".format(str(e)))
              
     #Set[string] list_features(self): Conjunto de características cargados para el dataset.
     def list_features(self):
@@ -73,8 +75,8 @@ class TabularDatasetSummary(DatasetSummary):
                 stats[feature]['n_null'] = self.data[feature].isnull().sum()
                 stats[feature]['n_total'] = self.data[feature].shape[0]
             return stats
-        except:
-            raise ValueError("Error")
+        except Exception as e: 
+            raise ValueError("Error: {}".format(str(e)))
     
     def histogram(self, feature, bins=10):
         try:
@@ -82,5 +84,5 @@ class TabularDatasetSummary(DatasetSummary):
                 return self.data[feature].value_counts().index, self.data[feature].value_counts().values
             else:
                 return np.histogram(self.data[feature], bins=bins)
-        except:
-            raise ValueError("Error") 
+        except Exception as e: 
+            raise ValueError("Error: {}".format(str(e)))
