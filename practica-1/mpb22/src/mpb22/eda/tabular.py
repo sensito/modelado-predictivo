@@ -48,7 +48,7 @@ class TabularDatasetSummary(DatasetSummary):
     #Set[string] list_labels(self): Conjunto de etiquetas cargados para el dataset.
     def list_labels(self):
         try:
-            if self.labels is not None:
+            if self.labels != None:
               return set(self.labels.columns)
             else:
                 print("No hay labels")
@@ -59,7 +59,7 @@ class TabularDatasetSummary(DatasetSummary):
     def count_categorical(self):
         try:
             temp1 = self.data[self.data.columns].select_dtypes(include=['object']).shape[1]
-            if self.labels is not None:           
+            if self.labels != None:           
                 temp2 = self.labels[self.labels.columns].select_dtypes(include=['object']).shape[1]
                 temp1 = temp1 + temp2            
             return temp1
@@ -78,8 +78,8 @@ class TabularDatasetSummary(DatasetSummary):
         
     def statistics(self):
         try: 
-            if self.labels is not None:
-                self.data = pd.concat([self.data, self.labels], axis=1)
+            if self.labels != None:
+                self.data = pd.concat([self.data, self.labels], axis=1).reindex(self.data.index)
             stats = {}
             for feature in self.data.columns:
                 stats[feature] = {}
@@ -102,7 +102,7 @@ class TabularDatasetSummary(DatasetSummary):
     
     def histogram(self, feature, bins=10):
         if self.labels is not None:
-            self.data = pd.concat([self.data, self.labels], axis=1)
+            self.data = pd.concat([self.data, self.labels], axis=1).reindex(self.data.index)
         try:
             if self.data[feature].dtype == 'object':
                 return self.data[feature].value_counts().index, self.data[feature].value_counts().values
