@@ -3,6 +3,7 @@
 # features: Lista con los nombres de las columnas que contienen las características.
 # labels: Lista con los nombres de las columnas que contienen las etiquetas.
 # Para todos los casos que deberían enviar un error devuelva un ValueError 
+from pickle import TRUE
 import pandas as pd
 import numpy as np
 #heredar de la clase abstracta DatasetSummary en base.py
@@ -19,15 +20,15 @@ class TabularDatasetSummary(DatasetSummary):
                 self.labels = labels
                 features = [x for x in features if x not in labels]
                 self.features  = features
-                self.data = pd.read_csv(filepath, names=self.features, header=[0])
-                self.labels = pd.read_csv(filepath, names=self.labels, header=[0])
+                self.data = pd.read_csv(filepath, names=self.features, header=True)
+                self.labels = pd.read_csv(filepath, names=self.labels, header=True)
             elif features is not None:
                 self.features = features
-                self.data = pd.read_csv(filepath, names = features, header=[0])
+                self.data = pd.read_csv(filepath, names = features, header=True)
             elif labels is not None:
                 self.labels = labels
                 self.data = pd.read_csv(filepath, header=[0])
-                self.labels = pd.read_csv(filepath, names=self.labels, header=[0])
+                self.labels = pd.read_csv(filepath, names=self.labels, header = True)
                 #quit columns stay in self.labels but no in self.data
                 self.data = self.data.drop(self.labels, axis=1)
 
