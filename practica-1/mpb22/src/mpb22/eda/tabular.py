@@ -99,6 +99,8 @@ class TabularDatasetSummary(DatasetSummary):
             if self.data[feature].dtype == 'object':
                 return self.data[feature].value_counts().index, self.data[feature].value_counts().values
             else:
-                return np.histogram(self.data[feature], bins=bins)
+                x,y = np.histogram(self.data[feature], bins=bins)
+                y = y[:-1]
+                return x,y
         except Exception as e: 
             raise ValueError("Error: {}".format(str(e)))
