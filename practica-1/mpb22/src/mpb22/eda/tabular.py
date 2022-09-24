@@ -19,15 +19,15 @@ class TabularDatasetSummary(DatasetSummary):
                 self.labels = labels
                 features = [x for x in features if x not in labels]
                 self.features  = features
-                self.data = pd.read_csv(filepath, names=self.features)
-                self.labels = pd.read_csv(filepath, names=self.labels)
+                self.data = pd.read_csv(filepath, names=self.features, header=[0])
+                self.labels = pd.read_csv(filepath, names=self.labels, header=[0])
             elif features is not None:
                 self.features = features
-                self.data = pd.read_csv(filepath, names = features)
+                self.data = pd.read_csv(filepath, names = features, header=[0])
             elif labels is not None:
                 self.labels = labels
-                self.data = pd.read_csv(filepath)
-                self.labels = pd.read_csv(filepath, names=self.labels)
+                self.data = pd.read_csv(filepath, header=[0])
+                self.labels = pd.read_csv(filepath, names=self.labels, header=[0])
                 #quit columns stay in self.labels but no in self.data
                 self.data = self.data.drop(self.labels, axis=1)
 
