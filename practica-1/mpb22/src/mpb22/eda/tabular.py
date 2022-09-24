@@ -101,6 +101,6 @@ class TabularDatasetSummary(DatasetSummary):
             else:
                 x,y = np.histogram(self.data[feature], bins=bins)
                 y = y[:-1]
-                return x,y
+                return y,x
         except Exception as e: 
             raise ValueError("Error: {}".format(str(e)))
