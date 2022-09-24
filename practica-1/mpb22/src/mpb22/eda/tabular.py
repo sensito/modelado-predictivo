@@ -57,29 +57,22 @@ class TabularDatasetSummary(DatasetSummary):
             raise ValueError("No hay labels")
     #Integer count_categorical(self): Conteo de características categóricas.
     def count_categorical(self):
-        try:
-            temp1 = self.data[self.data.columns].select_dtypes(include=['object']).shape[1]
-            if self.labels != None:           
-                temp2 = self.labels[self.labels.columns].select_dtypes(include=['object']).shape[1]
-                temp1 = temp1 + temp2            
-            return temp1
+        try:    
+            cols = self.data.columns
+            num_cols = self.data._get_numeric_data().columns 
+            #Conteo de características categóricas.
+            return len(list(set(cols) - set(num_cols)))
         except:
             raise ValueError("No hay features")
     #Integer count_numerical(self): Conteo de características numéricas.
     def count_numerical(self):
         try:
-            temp1 = self.data[self.data.columns].select_dtypes(include=['float64', 'int64']).shape[1]
-            if self.labels is not None:
-                temp2 =  self.labels[self.labels.columns].select_dtypes(include=['float64', 'int64']).shape[1]
-                temp1 =temp1 + temp2
-            return temp1
+            return self.data[self.data.columns].select_dtypes(include=['float64', 'int64']).shape[1]
         except:
             raise ValueError("No hay features")
         
     def statistics(self):
         try: 
-            if self.labels != None:
-                self.data = pd.concat([self.data, self.labels], axis=1).reindex(self.data.index)
             stats = {}
             for feature in self.data.columns:
                 stats[feature] = {}
