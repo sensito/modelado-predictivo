@@ -94,8 +94,6 @@ class TabularDatasetSummary(DatasetSummary):
             raise ValueError("Error: {}".format(str(e)))
     
     def histogram(self, feature, bins=10):
-        if self.labels is not None:
-            self.data = pd.concat([self.data, self.labels], axis=1).reindex(self.data.index)
         try:
             if self.data[feature].dtype == 'object':
                 return self.data[feature].value_counts().index, self.data[feature].value_counts().values
