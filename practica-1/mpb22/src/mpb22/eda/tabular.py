@@ -51,8 +51,7 @@ class TabularDatasetSummary(DatasetSummary):
             if self.labels is not None:
               return set(self.labels.columns)
             else:
-                print("No hay labels")
-                return None
+                return 0
         except:
             raise ValueError("No hay labels")
     #Integer count_categorical(self): Conteo de características categóricas.
