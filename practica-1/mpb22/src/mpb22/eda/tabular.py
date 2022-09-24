@@ -48,7 +48,7 @@ class TabularDatasetSummary(DatasetSummary):
     #Set[string] list_labels(self): Conjunto de etiquetas cargados para el dataset.
     def list_labels(self):
         try:
-            if self.labels != None:
+            if self.labels is not None:
               return set(self.labels.columns)
             else:
                 print("No hay labels")
@@ -78,6 +78,7 @@ class TabularDatasetSummary(DatasetSummary):
                 stats[feature] = {}
                 if self.data[feature].dtype == 'object':
                     stats[feature]['type'] = 'categorical'
+                    stats[feature]['mean'] = None
                     stats[feature]['mode'] = self.data[feature].mode()[0]
                     stats[feature]['median'] = None
                     stats[feature]['std'] = None
