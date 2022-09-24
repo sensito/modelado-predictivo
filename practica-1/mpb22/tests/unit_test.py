@@ -16,7 +16,7 @@ class TestTabularDatasetSummary(unittest.TestCase):
         self.assertEqual(self.dataset.list_features(), {'exang', 'thal', 'oldpeak', 'cp', 'trestbps', 'slope', 'age', 'fbs', 'thalach', 'target', 'restecg', 'chol', 'sex', 'ca'})
     #test funcion list_labels
     def test_list_labels(self):
-        self.assertEqual(self.dataset.list_labels(), set(list(range(1025))))
+        self.assertEqual(self.dataset.list_labels(), None)
     #test funcion count_categorical = 0
     def test_count_categorical(self):
         self.assertEqual(self.dataset.count_categorical(), 0)
