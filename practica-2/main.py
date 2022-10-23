@@ -3,9 +3,16 @@ from typing import List
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import Perceptron
+from pydantic import BaseModel
 
 
 
+class data_Url(BaseModel):
+    data_url: str = None
+
+class data_Weight(BaseModel):
+    model_weights: List[float] = None
+    input_data: List[List[float]] = None
 
 
 app = FastAPI()
@@ -16,8 +23,8 @@ async def root():
 
 
 @app.post("/linear/pla/train")
-async def train_pla(data_url: str):
-    df = pd.read_csv(data_url, header=None)
+async def train_pla(data: data_Url):
+    df = pd.read_csv(data.data_url, header=None)
     print(df.head())
     #drop label column
     y = df['label'].values
@@ -31,7 +38,19 @@ async def train_pla(data_url: str):
 
 
 @app.post("/linear/pla/predict")
-async def predict_pla(model_weights: List[float], input_data: List[List[float]]):
+async def predict_pla(data: data_Weight):
+    weights = data.model_weights
+    df = data.input_data
+    print(df)
+    print(weights)
+    oneVector = np.ones((len(df),1))
+    df = np.concatenate((oneVector, df), axis=1)
+    y = np.dot(df, weights)
+    y = np.where(y > 0, 1, -1)
+    return y.tolist()
+
+    
+
     #print(model_weights)
     #print(input_data)
     oneVector = np.ones((len(input_data),1))
@@ -46,8 +65,8 @@ async def predict_pla(model_weights: List[float], input_data: List[List[float]])
     #return a.tolist()
 
 @app.post("/linear/pocket/train")
-async def train_pocket(data_url: str):
-    df = pd.read_csv(data_url, header=None)
+async def train_pocket(data: data_Url):
+    df = pd.read_csv(data.data_url, header=None)
     # separate df only in two classes
     Y = df['label'].values
     X_train = df.drop('label', axis=1).values
@@ -82,14 +101,13 @@ async def train_pocket(data_url: str):
     return weights.transpose().tolist()[0]
 
 @app.post("/linear/pocket/predict")
-async def predict_pocket(model_weights: List[float], input_data: List[List[float]]):
-    #print(model_weights)
-    #print(input_data)
-    oneVector = np.ones((len(input_data),1))
-    input_data = np.concatenate((oneVector, input_data), axis=1)
-    #print(input_data)
-    #print(model_weights)
-    y = np.dot(input_data, model_weights)
-    #print(y)
+async def predict_pocket(data: data_Weight):
+    weights = data.model_weights
+    df = data.input_data
+    print(df)
+    print(weights)
+    oneVector = np.ones((len(df),1))
+    df = np.concatenate((oneVector, df), axis=1)
+    y = np.dot(df, weights)
     y = np.where(y > 0, 1, -1)
     return y.tolist()
