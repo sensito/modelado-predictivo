@@ -4,7 +4,6 @@
 
 import os
 
-import uvicorn
 if __name__ == "__main__":
     # ruta donde esta este archivo ejecutandoce actualmente
     path = os.path.dirname(os.path.abspath(__file__))
