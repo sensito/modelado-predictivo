@@ -1,10 +1,7 @@
-from pprint import pp
-import re
 from fastapi import FastAPI
 from typing import List
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 from sklearn.linear_model import Perceptron
 
 
