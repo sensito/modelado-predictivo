@@ -24,7 +24,8 @@ async def root():
 
 @app.post("/linear/pla/train")
 async def train_pla(data: data_Url):
-    df = pd.read_csv(data.data_url, header=None)
+    #df whit header
+    df = pd.read_csv(data.data_url, header=0)
     print(df.head())
     #drop label column
     y = df['label'].values
@@ -66,7 +67,7 @@ async def predict_pla(data: data_Weight):
 
 @app.post("/linear/pocket/train")
 async def train_pocket(data: data_Url):
-    df = pd.read_csv(data.data_url, header=None)
+    df = pd.read_csv(data.data_url, header=0)
     # separate df only in two classes
     Y = df['label'].values
     X_train = df.drop('label', axis=1).values
