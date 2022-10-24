@@ -5,11 +5,11 @@ import numpy as np
 from sklearn.linear_model import Perceptron
 from pydantic import BaseModel
 
-def perceptron(X, y, lr, epochs):
+
+def perceptron(X, y, epochs):
     
     # X --> Inputs.
     # y --> labels/target.
-    # lr --> learning rate.
     # epochs --> Number of iterations.
     
     # m-> number of training examples
@@ -50,6 +50,7 @@ def perceptron(X, y, lr, epochs):
         
     return theta, n_miss_list
 
+
 class data_Url(BaseModel):
     data_url: str = None
 
@@ -72,8 +73,7 @@ async def train_pla(data: data_Url):
     y = df['label'].values
     df = df.drop('label', axis=1).values
     theta, miss_l = perceptron(df, y, 0.1, 1000)
-    return theta.T[0].tolist()
-#a
+    return theta.transpose().tolist()[0]
 
 @app.post("/linear/pla/predict")
 async def predict_pla(data: data_Weight):
@@ -81,10 +81,10 @@ async def predict_pla(data: data_Weight):
     df = data.input_data
     oneVector = np.ones((len(df),1))
     df = np.concatenate((oneVector, df), axis=1)
-    Y_pred = np.dot(df, pesos)
+    Y_pred = np.dot(df, weights)
     Y_pred = np.where(Y_pred > 0, 1, -1)
     Y_pred = Y_pred.tolist()
-    return y.tolist()
+    return Y_pred.tolist()
 
 @app.post("/linear/pocket/train")
 async def train_pocket(data: data_Url):
