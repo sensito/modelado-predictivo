@@ -5,7 +5,50 @@ import numpy as np
 from sklearn.linear_model import Perceptron
 from pydantic import BaseModel
 
-
+def perceptron(X, y, lr, epochs):
+    
+    # X --> Inputs.
+    # y --> labels/target.
+    # lr --> learning rate.
+    # epochs --> Number of iterations.
+    
+    # m-> number of training examples
+    # n-> number of features 
+    m, n = X.shape
+    
+    # Initializing parapeters(theta) to zeros.
+    # +1 in n+1 for the bias term.
+    theta = np.zeros((n+1,1))
+    
+    # Empty list to store how many examples were 
+    # misclassified at every iteration.
+    n_miss_list = []
+    
+    
+    missclassified = True
+    epoch = 0
+    while epoch < epochs and missclassified:
+        epoch += 1
+        missclassified = False
+        # variable to store #misclassified.
+        n_miss = 0
+        
+        # looping for every example.
+        for idx, x_i in enumerate(X):
+            
+            # Insering 1 for bias, X0 = 1.
+            x_i = np.insert(x_i, 0, 1).reshape(-1,1)
+            
+            # Calculating prediction/hypothesis.
+            y_hat = np.sign(np.dot(x_i.T, theta))
+            
+            # Updating if the example is misclassified.
+            if (np.squeeze(y_hat) - y[idx]) != 0:
+                theta += y[idx] *x_i
+                
+                missclassified = True
+        
+    return theta, n_miss_list
 
 class data_Url(BaseModel):
     data_url: str = None
@@ -28,10 +71,8 @@ async def train_pla(data: data_Url):
     #drop label column
     y = df['label'].values
     df = df.drop('label', axis=1).values
-    #separate dataframe only in two classes
-    ppn = Perceptron(max_iter=1000, eta0=0.1, random_state=0)
-    model_weights = np.concatenate((ppn.intercept_, ppn.coef_[0]), axis=0)
-    return model_weights.tolist()
+    theta, miss_l = perceptron(df, y, 0.1, 1000)
+    return theta.T[0].tolist()
 #a
 
 @app.post("/linear/pla/predict")
@@ -40,7 +81,9 @@ async def predict_pla(data: data_Weight):
     df = data.input_data
     oneVector = np.ones((len(df),1))
     df = np.concatenate((oneVector, df), axis=1)
-    y = np.sign(np.dot(df, weights))
+    Y_pred = np.dot(df, pesos)
+    Y_pred = np.where(Y_pred > 0, 1, -1)
+    Y_pred = Y_pred.tolist()
     return y.tolist()
 
 @app.post("/linear/pocket/train")
