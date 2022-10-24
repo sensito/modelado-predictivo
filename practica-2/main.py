@@ -83,7 +83,6 @@ async def predict_pla(data: data_Weight):
     df = np.concatenate((oneVector, df), axis=1)
     Y_pred = np.dot(df, weights)
     Y_pred = np.where(Y_pred > 0, 1, -1)
-    Y_pred = Y_pred.tolist()
     return Y_pred.tolist()
 
 @app.post("/linear/pocket/train")
