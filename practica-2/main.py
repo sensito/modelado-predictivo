@@ -32,7 +32,7 @@ async def train_pla(data: data_Url):
     ppn = Perceptron(max_iter=40, eta0=0.1, random_state=0)
     model_weights = np.concatenate((ppn.intercept_, ppn.coef_[0]), axis=0)
     return model_weights.tolist()
-
+#a
 
 @app.post("/linear/pla/predict")
 async def predict_pla(data: data_Weight):
