@@ -29,7 +29,7 @@ async def train_pla(data: data_Url):
     y = df['label'].values
     df = df.drop('label', axis=1).values
     #separate dataframe only in two classes
-    ppn = Perceptron(max_iter=40, eta0=0.1, random_state=0)
+    ppn = Perceptron(max_iter=1000, eta0=0.1, random_state=0)
     model_weights = np.concatenate((ppn.intercept_, ppn.coef_[0]), axis=0)
     return model_weights.tolist()
 #a
