@@ -24,16 +24,12 @@ async def root():
 
 @app.post("/linear/pla/train")
 async def train_pla(data: data_Url):
-    #df whit header
     df = pd.read_csv(data.data_url, header=0)
-    print(df.head())
     #drop label column
     y = df['label'].values
     df = df.drop('label', axis=1).values
     #separate dataframe only in two classes
     ppn = Perceptron(max_iter=40, eta0=0.1, random_state=0)
-    print (ppn.fit(df, y))
-    print(ppn.coef_)
     model_weights = np.concatenate((ppn.intercept_, ppn.coef_[0]), axis=0)
     return model_weights.tolist()
 
@@ -42,28 +38,10 @@ async def train_pla(data: data_Url):
 async def predict_pla(data: data_Weight):
     weights = data.model_weights
     df = data.input_data
-    print(df)
-    print(weights)
     oneVector = np.ones((len(df),1))
     df = np.concatenate((oneVector, df), axis=1)
-    y = np.dot(df, weights)
-    y = np.where(y > 0, 1, -1)
+    y = np.sign(np.dot(df, weights))
     return y.tolist()
-
-    
-
-    #print(model_weights)
-    #print(input_data)
-    oneVector = np.ones((len(input_data),1))
-    input_data = np.concatenate((oneVector, input_data), axis=1)
-    #print(input_data)
-    #print(model_weights)
-    y = np.dot(input_data, model_weights)
-    #print(y)
-    y = np.where(y > 0, 1, -1)
-    return y.tolist()
-    #a = np.sign(np.dot(input_data, model_weights))
-    #return a.tolist()
 
 @app.post("/linear/pocket/train")
 async def train_pocket(data: data_Url):
