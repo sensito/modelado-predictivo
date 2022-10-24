@@ -72,7 +72,7 @@ async def train_pla(data: data_Url):
     #drop label column
     y = df['label'].values
     df = df.drop('label', axis=1).values
-    theta, miss_l = perceptron(df, y, 0.1, 1000)
+    theta, miss_l = perceptron(df, y, 1000)
     return theta.transpose().tolist()[0]
 
 @app.post("/linear/pla/predict")
